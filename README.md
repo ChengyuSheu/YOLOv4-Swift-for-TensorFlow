@@ -7,10 +7,12 @@ Requirement:
 
 Achieved:
 1. .weights file supported
-2. Exact Output like Darknet
+2. EXACT OUTPUT like Darknet
 3. faster than Darknet on CPU
 
 TODO:
+
+0. refactor code (it's my first swift project, hacky things need to be improved.
 1. post-processing
 2. visualization
 3. training
