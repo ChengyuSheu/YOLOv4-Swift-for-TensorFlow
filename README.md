@@ -6,7 +6,7 @@ Requirement:
 2. swift-jupyter + SPM
 
 Achieved:
-1. .weights file supported
+1. .weights file loading supported
 2. EXACT OUTPUT like Darknet
 3. faster than Darknet on CPU
 
@@ -16,3 +16,9 @@ TODO:
 1. post-processing
 2. visualization
 3. training
+
+Implemented NN components:
+1. SPP, Spatial Pyramid Pooling
+2. CSP, Cross-Stage-Partial-connections
+3. mish, activation function
+4. Darknet-padding methods
