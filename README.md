@@ -15,7 +15,8 @@ Achieved:
 feature:
 - [x] CORE
   - [x] yolov4 structure
-  - [ ] post-processing, YOLO layer, NMS
+  - [x] YOLO layer
+  - [ ] post-processing, NMS
 - [ ] I/O
   - [x] Darknet I/O
   - [x] Swift load Images
@@ -28,3 +29,4 @@ NN components:
 - [x] CSP, Cross-Stage-Partial-connections
 - [x] mish, activation function
 - [x] Darknet-padding methods(used in Convolutional_layer)
+- [x] Yolo layer
