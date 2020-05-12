@@ -108,5 +108,17 @@ extension YOLOv4 {
           x.yolo3 = yolo3.load(from: stream)
        return x
    }
+    
+    
+    public func load(fileAtPath path: String, ignoreBytes: Int = 20) -> YOLOv4 {
+        var x = self
+        if let stream:InputStream = InputStream(fileAtPath: path) {
+            stream.open()
+            var head:[UInt8] = [UInt8](repeating: 0, count: ignoreBytes)
+            stream.read(&head, maxLength: head.count)
+            x = self.load(from: stream)
+            stream.close()
+        }
+        return x
+    }
 }
-

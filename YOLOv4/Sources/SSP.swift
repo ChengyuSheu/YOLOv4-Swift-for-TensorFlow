@@ -15,6 +15,6 @@ public struct SPP<T: TensorFlowFloatingPoint>: Layer {
         let high = input |> maxpoolHigh
         let mid  = input |> maxpoolMid
         let low  = input |> maxpoolLow
-        return high.concatenated(with: mid, alongAxis: -1).concatenated(with: low, alongAxis: -1).concatenated(with: input, alongAxis: -1)
+        return low.concatenated(with: mid, alongAxis: -1).concatenated(with: high, alongAxis: -1).concatenated(with: input, alongAxis: -1)
     }
 }
