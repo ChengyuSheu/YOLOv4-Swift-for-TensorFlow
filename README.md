@@ -9,17 +9,18 @@ Requirement:
 - swift-jupyter + SPM
 
 Achieved:
-- EXACT OUTPUT like Darknet
-- faster than Darknet on CPU
+- __EXACT OUTPUT__ same as Darknet
+- 100% faster than Darknet on CPU
 
 feature:
 - [x] CORE
   - [x] yolov4 structure
   - [x] YOLO layer
-  - [ ] post-processing, NMS
+  - [X] post-processing, NMS
 - [ ] I/O
   - [x] Darknet I/O
   - [x] Swift load Images
+  - [ ] resize Image
   - [ ] Swift Visualization
 - [ ] Train
 - [ ] refactor code (it's my first swift project, hacky things need to be improved.
