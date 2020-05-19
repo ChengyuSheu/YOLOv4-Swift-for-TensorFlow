@@ -9,8 +9,9 @@ Requirement:
 - swift-jupyter + SPM
 
 Achieved:
-- EXACT OUTPUT like Darknet
-- faster than Darknet on CPU
+- __EXACT OUTPUT__ same as Darknet
+(numerical error < 5e-5)
+- 100% faster than Darknet on CPU
 
 feature:
 - [x] CORE
@@ -20,6 +21,7 @@ feature:
 - [ ] I/O
   - [x] Darknet I/O
   - [x] Swift load Images
+  - [ ] resize Image
   - [ ] Swift Visualization
 - [ ] Train
 - [ ] refactor code (it's my first swift project, hacky things need to be improved.
