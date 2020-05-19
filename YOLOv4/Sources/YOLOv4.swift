@@ -7,6 +7,7 @@ public struct YOLO<T: TensorFlowFloatingPoint>: ParameterlessLayer {
     @noDerivative public var cls: Int
     @noDerivative public var anc: Int
     @noDerivative public var scale: Float
+    @noDerivative public var test: Bool
     public init(imageSize: [Int],
                 anchors ans: Tensor<Float>,
                 cls c: Int = 80,
@@ -17,6 +18,7 @@ public struct YOLO<T: TensorFlowFloatingPoint>: ParameterlessLayer {
         anc = anchors.shape[0]
         cls = c
         scale = s
+        test = false
     }
 
     @differentiable
@@ -35,16 +37,23 @@ public struct YOLO<T: TensorFlowFloatingPoint>: ParameterlessLayer {
         var box_centers = sigmoid(features[0]) * scale - (scale - 1) / 2
         var confidence = sigmoid(features[2])
         var classes = sigmoid(features[3])
-        var box_sizes = exp(features[1]) * anchors  / Tensor<Float>([Float(imSize[0]), Float(imSize[1])])
+        var box_sizes = features[1]
     
-        var grid_x  = Tensor<Float>(rangeFrom: 0, to: Float(w), stride: 1)
-        var grid_y  = Tensor<Float>(rangeFrom: 0, to: Float(h), stride: 1)
-        var x_offset = grid_y.reshaped(to: [1,1,w,1,1]).tiled(multiples: [1,h,1,anc,1])
-        var y_offset = grid_x.reshaped(to: [1,h,1,1,1]).tiled(multiples: [1,1,w,anc,1])
-        var offset = x_offset.concatenated(with: y_offset, alongAxis: -1)
+       
 
-        box_centers = (box_centers + offset) * Tensor<Float>([1/Float(h), 1/Float(w)])
-    
+        if (!test) {
+            
+            var grid_x  = Tensor<Float>(rangeFrom: 0, to: Float(w), stride: 1)
+            var grid_y  = Tensor<Float>(rangeFrom: 0, to: Float(h), stride: 1)
+            var x_offset = grid_y.reshaped(to: [1,1,w,1,1]).tiled(multiples: [1,h,1,anc,1])
+            var y_offset = grid_x.reshaped(to: [1,h,1,1,1]).tiled(multiples: [1,1,w,anc,1])
+            var offset = x_offset.concatenated(with: y_offset, alongAxis: -1)
+
+            box_centers = (box_centers + offset) / Tensor<Float>([Float(h), Float(w)])
+            box_sizes =  exp(box_sizes) * anchors
+
+        }     
+        
         return box_centers.concatenated(with: box_sizes, alongAxis: -1)
             .concatenated(with: confidence, alongAxis: -1)
             .concatenated(with: classes, alongAxis: -1)
@@ -206,8 +215,8 @@ public struct YOLOv4<T: TensorFlowFloatingPoint>: Layer {
       let olevel3 = (olevel2 |> conv_ml4).concatenated(with: mlevel3, alongAxis: -1) |> convBNssss3
       
       let output1 = (olevel1 |> oconv1 |> yolo1 |> yoloHead1).transposed(permutation: [0,3,1,2]).reshaped(to: [b,outFilters,h*w*16])
-      let output2 = (olevel2 |> oconv2 |> yolo2 |> yoloHead1).transposed(permutation: [0,3,1,2]).reshaped(to: [b,outFilters,h*w*4])
-      let output3 = (olevel3 |> oconv3 |> yolo3 |> yoloHead1).transposed(permutation: [0,3,1,2]).reshaped(to: [b,outFilters,h*w])
+      let output2 = (olevel2 |> oconv2 |> yolo2 |> yoloHead2).transposed(permutation: [0,3,1,2]).reshaped(to: [b,outFilters,h*w*4])
+      let output3 = (olevel3 |> oconv3 |> yolo3 |> yoloHead3).transposed(permutation: [0,3,1,2]).reshaped(to: [b,outFilters,h*w])
       
     return output1.concatenated(with: output2, alongAxis: -1).concatenated(with: output3, alongAxis: -1)
   }

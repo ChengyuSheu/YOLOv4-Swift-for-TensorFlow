@@ -16,7 +16,7 @@ feature:
 - [x] CORE
   - [x] yolov4 structure
   - [x] YOLO layer
-  - [ ] post-processing, NMS
+  - [x] post-processing, NMS
 - [ ] I/O
   - [x] Darknet I/O
   - [x] Swift load Images
