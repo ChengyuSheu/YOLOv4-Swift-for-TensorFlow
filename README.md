@@ -10,6 +10,7 @@ Requirement:
 
 Achieved:
 - __EXACT OUTPUT__ same as Darknet
+(numerical error < 5e-5)
 - 100% faster than Darknet on CPU
 
 feature:
